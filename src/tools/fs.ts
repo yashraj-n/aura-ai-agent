@@ -157,6 +157,7 @@ export class ToolCallManager {
       logger.debug(`Writing file: ${filePath}`);
       try {
         const fullPath = this.joinPath(filePath);
+        logger.debug(`Writing file to: ${fullPath}`);
         await fs.writeFile(fullPath, content);
         logger.debug(`Successfully wrote file: ${filePath}`);
         return `File written: ${fullPath}`;

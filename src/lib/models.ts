@@ -10,4 +10,4 @@ export const openRouter = createOpenRouter({
 
 export const mistral = createMistral({
   apiKey: process.env.MISTRAL_API_KEY,
-})("mistral-large-latest");
+})("codestral-latest");

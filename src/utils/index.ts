@@ -1,8 +1,12 @@
 import Embeddings from "../core/embeddings";
 import FastIndexer from "../core/indexer";
 
+export type IndexEmbedResponse = {
+    chunks: string[];
+    embeddings: Embeddings;
+}
 
-export async function indexAndEmbedRepo(repoPath: string) {
+export async function indexAndEmbedRepo(repoPath: string): Promise<IndexEmbedResponse> {
     const fastIndexer = new FastIndexer(repoPath);
     const chunks = await fastIndexer.generateChunks();
     const Embeder = new Embeddings(repoPath);

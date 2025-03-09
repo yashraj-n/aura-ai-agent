@@ -2,7 +2,10 @@ import "dotenv/config";
 
 import path from "path";
 import { logger } from "./logger";
-import { generateReview } from "./core/review";
+import { generatePlan } from "./core/plan";
+import "./utils/instrumentation";
+import { indexAndEmbedRepo } from "./utils";
+import { generateChanges } from "./core/gen";
 
 logger.debug("Starting the application...");
 
@@ -31,17 +34,17 @@ const PATCHES = `--- changed.ts  2025-03-08 15:24:28.848922800 +0000
  }
 
  await main().catch(console.error);
--MediaStreamAudioDestinationNodesd`
+-MediaStreamAudioDestinationNodesd`;
 
-const review = await generateReview(repoPath, PATCHES);
-console.log("Review: ", review);
+const threads = ["we need an express server to check the progress of scraping, from scraper-util.ts"];
 
-// const threads = ["we need an express server to check the progress of scraping"];
+const embeddingsData = await indexAndEmbedRepo(repoPath);
+const plan = await generatePlan(repoPath, threads, embeddingsData);
+console.log("PLAN: ", plan);
 
-// const plan = await generatePlan(repoPath, threads);
-// console.log(plan);
+const gen = await generateChanges(repoPath, plan, embeddingsData);
+console.log("GEN: ", gen);
 
-// process.on("exit", async () => {
-//   logger.info("Shutting down the application...");
-//   await sdk.shutdown();
-// });
+process.on("exit", async () => {
+    logger.info("Shutting down the application...");
+});
