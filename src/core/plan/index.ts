@@ -1,9 +1,9 @@
-import { mistral, openRouter } from "../lib/models";
-import { ToolCallManager } from "../tools/fs";
+import { mistral, openRouter } from "../../lib/models";
+import { ToolCallManager } from "../../tools/fs";
 import { generateText } from "ai";
-import { ZReviewLLMSchema } from "../types/zod";
-import prompts from "../lib/prompts";
-import { logger } from "../logger";
+import { ZReviewLLMSchema } from "../../types/zod";
+import prompts from "../../lib/prompts";
+import { logger } from "../../logger";
 import { AISDKExporter } from "langsmith/vercel";
 
 export async function generatePlan(repoPath: string, threads: string[]) {

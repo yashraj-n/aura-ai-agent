@@ -146,4 +146,25 @@ export class ToolCallManager {
       }
     },
   };
+
+  public WriteFile: Tool = {
+    description: "Writes a file",
+    parameters: z.object({
+      path: z.string().describe("The path to the file to write, relative to base directory"),
+      content: z.string().describe("The content of the file to write"),
+    }),
+    execute: async ({ path: filePath, content }) => {
+      logger.debug(`Writing file: ${filePath}`);
+      try {
+        const fullPath = this.joinPath(filePath);
+        await fs.writeFile(fullPath, content);
+        logger.debug(`Successfully wrote file: ${filePath}`);
+        return `File written: ${fullPath}`;
+      } catch (error) {
+        const err = error as Error;
+        logger.error(`Error writing file ${filePath}: ${err.message}`);
+        return `Error: Failed to write file - ${err.message}`;
+      }
+    },
+  };
 }
