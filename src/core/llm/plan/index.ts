@@ -1,10 +1,10 @@
-import { mistral, openRouter } from "../../lib/models";
+import { codestral } from "../../../lib/models";
 import { ToolCallManager } from "../../tools/fs";
 import { generateText } from "ai";
-import prompts from "../../lib/prompts";
-import { logger } from "../../logger";
+import prompts from "../../../lib/prompts";
+import { logger } from "../../../logger";
 import { AISDKExporter } from "langsmith/vercel";
-import type { IndexEmbedResponse } from "../../utils";
+import type { IndexEmbedResponse } from "../../../utils";
 
 export async function generatePlan(
     repoPath: string,
@@ -24,7 +24,7 @@ export async function generatePlan(
     logger.info("Calling LLM to generate plan...");
     try {
         const response = await generateText({
-            model: mistral,
+            model: codestral,
             system: prompts.PLAN_GENERATION,
             messages: [{ role: "user", content: userMessage }],
             tools: {

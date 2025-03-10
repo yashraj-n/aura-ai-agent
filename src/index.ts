@@ -1,11 +1,13 @@
 import "dotenv/config";
+import "./app.ts";
 
 import path from "path";
 import { logger } from "./logger";
-import { generatePlan } from "./core/plan";
 import "./utils/instrumentation";
 import { indexAndEmbedRepo } from "./utils";
-import { generateChanges } from "./core/gen";
+import { generateReview } from "./core/llm/review/index.ts";
+import { transformStructural } from "./core/llm/structure/index.ts";
+import { ZReviewLLMSchema } from "./types/zod";
 
 logger.debug("Starting the application...");
 
@@ -36,15 +38,13 @@ const PATCHES = `--- changed.ts  2025-03-08 15:24:28.848922800 +0000
  await main().catch(console.error);
 -MediaStreamAudioDestinationNodesd`;
 
-const threads = ["we need an express server to check the progress of scraping, from scraper-util.ts"];
+const threads = [
+    "we need an express server to check the progress of scraping, from scraper-util.ts",
+];
 
 const embeddingsData = await indexAndEmbedRepo(repoPath);
-const plan = await generatePlan(repoPath, threads, embeddingsData);
-console.log("PLAN: ", plan);
+const review = await generateReview(repoPath, PATCHES, embeddingsData);
+console.log("RAW REVIEW", review);
 
-const gen = await generateChanges(repoPath, plan, embeddingsData);
-console.log("GEN: ", gen);
-
-process.on("exit", async () => {
-    logger.info("Shutting down the application...");
-});
+const structural = await transformStructural(review, ZReviewLLMSchema);
+console.log("STRUCTURAL", structural);

@@ -1,10 +1,10 @@
-import { mistral, openRouter } from "../../lib/models";
+import { codestral, gemini } from "../../../lib/models";
 import { ToolCallManager } from "../../tools/fs";
 import { generateObject, generateText, Output } from "ai";
-import prompts from "../../lib/prompts";
+import prompts from "../../../lib/prompts";
 import { AISDKExporter } from "langsmith/vercel";
-import { type IndexEmbedResponse } from "../../utils";
-import { logger } from "../../logger";
+import { type IndexEmbedResponse } from "../../../utils";
+import { logger } from "../../../logger";
 
 export async function generateReview(
     repoPath: string,
@@ -19,7 +19,7 @@ export async function generateReview(
         repoPath
     );
     const response = await generateText({
-        model: mistral,
+        model: codestral,
         system: prompts.CODE_REVIEW,
         messages: [
             {

@@ -139,4 +139,15 @@ You will act as an **expert code reviewer** specializing in identifying issues f
 \`\`\`
 
 Ensure **strict compliance** with this format to avoid type validation errors.`,
+    STRUCTURAL_TRANSFORM: `
+    You will act as an expert structural transformer. You'll be given response from other Large language models, your job is to transform it into the structure provided to you.
+    `,
+    MESSAGE_PARSE: `
+    You will act as an expert message parser. You'll be given a message from a user, your job is to verify if user wants to do the following:
+    1. Add Feature/Fix Bug 
+    2. Code Review
+    3. None of the above
+
+    If user wants to do none of the above, you have to send him saying something of lines You did not understand the request, you can either add feature/fix bug or ask for code review.
+    `,
 };

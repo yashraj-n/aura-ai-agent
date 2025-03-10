@@ -2,7 +2,7 @@ import type { Tool } from "ai";
 import fs from "fs/promises";
 import { z } from "zod";
 import path from "path";
-import { logger } from "../logger";
+import { logger } from "../../logger";
 
 export class ToolCallManager {
   private basePath: string;

@@ -5,7 +5,7 @@ import { embedMany, generateText, tool } from "ai";
 import { db } from "../src/db";
 import { embeddings as embeddingsTable } from "../src/db/schema/embeddings";
 import { cosineDistance, desc, gt, sql, eq, and } from "drizzle-orm";
-import { mistral } from "../src/lib/models";
+import { codestral } from "../src/lib/models";
 import { z } from "zod";
 const files = await glob("./sample_project/**/*");
 const CHUNK_SIZE = 100;
@@ -66,7 +66,7 @@ const findRelevantEmbeddings = async (prompt: string) => {
 };
 
 const text = await generateText({
-  model: mistral,
+  model: codestral,
   prompt:
     "Does the code implement concurrency programming? use the getInformation tool to do semantic search on vector database of codebase? hint: search for p-limit maybe",
   tools: {
