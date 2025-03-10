@@ -41,7 +41,7 @@ coverage
 # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
 
 .grunt
-sample_project/
+sample_project*
 # Bower dependency directory (https://bower.io/)
 
 bower_components
@@ -173,3 +173,4 @@ dist
 
 # Finder (MacOS) folder config
 .DS_Store
+

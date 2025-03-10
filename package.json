@@ -31,6 +31,7 @@
     "node-diff3": "^3.1.2",
     "ollama-ai-provider": "^1.2.0",
     "pg": "^8.13.3",
+    "probot": "^13.4.4",
     "winston": "^3.17.0"
   },
   "scripts": {
