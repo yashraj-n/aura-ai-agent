@@ -19,12 +19,13 @@ async function startServer() {
 
         let repos = await octokit.apps.getInstallation();
         let listOfRepos: (typeof repos.data)[] = repos.data;
-        console.log(listOfRepos);
+        console.log(listOfRepos[0]);
 
         let accessToken = await octokit.apps.createInstallationAccessToken({
             installation_id: listOfRepos[0].id,
+            
         });
-
+      
         logger.info(
             `Starting server authenticated as GitHub App: ${appInfo.data?.name}`
         );

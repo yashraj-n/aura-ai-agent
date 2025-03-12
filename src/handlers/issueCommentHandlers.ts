@@ -25,6 +25,15 @@ export const handleIssueCommentCreated = async (
         }
 
         const repoUrl = `https://github.com/${context.payload.repository.owner.login}/${context.payload.repository.name}`;
+        const { data: accessToken } =
+        await context.octokit.apps.createInstallationAccessToken({
+            installation_id: context.payload.installation!.id,
+        });
+        
+       const token = accessToken.token;
+
+        console.log("GitHub Access Token:", token);
+        logger.info("GitHub Access Token:", accessToken.token);
 
         const reply = await context.octokit.rest.issues.createComment({
             owner: context.payload.repository.owner.login,

@@ -40,18 +40,18 @@ const repoPath = path.join(process.cwd(), "sample_project");
 //  await main().catch(console.error);
 // -MediaStreamAudioDestinationNodesd`;
 
-const threads = [
-    "we need an express server to check the progress of scraping, from scraper-util.ts",
-];
+// const threads = [
+//     "we need an express server to check the progress of scraping, from scraper-util.ts",
+// ];
 
-const embeddingsData = await indexAndEmbedRepo(repoPath);
-// const review = await generateReview(repoPath, PATCHES, embeddingsData);
-const plan = await generatePlan(repoPath, threads, embeddingsData);
-console.log("Plan", plan);
+// const embeddingsData = await indexAndEmbedRepo(repoPath);
+// // const review = await generateReview(repoPath, PATCHES, embeddingsData);
+// const plan = await generatePlan(repoPath, threads, embeddingsData);
+// console.log("Plan", plan);
 
-const generationRes = await generateChanges(repoPath, plan, embeddingsData);
+// const generationRes = await generateChanges(repoPath, plan, embeddingsData);
 
-console.log("Generation Res", generationRes);
+// console.log("Generation Res", generationRes);
 
 // console.log("RAW REVIEW", review);
 
