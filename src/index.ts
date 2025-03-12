@@ -8,10 +8,12 @@ import { indexAndEmbedRepo } from "./utils";
 import { generateReview } from "./core/llm/review/index.ts";
 import { transformStructural } from "./core/llm/structure/index.ts";
 import { ZReviewLLMSchema } from "./types/zod";
+import { generatePlan } from "./core/llm/plan/index.ts";
+import { generateChanges } from "./core/llm/gen/index.ts";
 
 logger.debug("Starting the application...");
 
-// const repoPath = path.join(process.cwd(), "sample_project");
+const repoPath = path.join(process.cwd(), "sample_project");
 
 // const PATCHES = `--- changed.ts  2025-03-08 15:24:28.848922800 +0000
 // +++ cosmetic-scrape.ts  2025-03-08 15:22:39.935792100 +0000
@@ -38,12 +40,19 @@ logger.debug("Starting the application...");
 //  await main().catch(console.error);
 // -MediaStreamAudioDestinationNodesd`;
 
-// const threads = [
-//     "we need an express server to check the progress of scraping, from scraper-util.ts",
-// ];
+const threads = [
+    "we need an express server to check the progress of scraping, from scraper-util.ts",
+];
 
-// const embeddingsData = await indexAndEmbedRepo(repoPath);
+const embeddingsData = await indexAndEmbedRepo(repoPath);
 // const review = await generateReview(repoPath, PATCHES, embeddingsData);
+const plan = await generatePlan(repoPath, threads, embeddingsData);
+console.log("Plan", plan);
+
+const generationRes = await generateChanges(repoPath, plan, embeddingsData);
+
+console.log("Generation Res", generationRes);
+
 // console.log("RAW REVIEW", review);
 
 // const structural = await transformStructural(review, ZReviewLLMSchema);

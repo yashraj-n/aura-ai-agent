@@ -17,7 +17,7 @@ export const handleIssueCommentCreated = async (
             context.payload.comment.body
         );
 
-const taskTodo = await calculateWhatToDo(context.payload.comment.body);
+        const taskTodo = await calculateWhatToDo(context.payload.comment.body);
 
         if (taskTodo.type === "NONE") {
             logger.info("No task to do, creating comment");
