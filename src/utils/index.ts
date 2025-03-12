@@ -20,8 +20,4 @@ export async function indexAndEmbedRepo(
     };
 }
 
-export function isSelfMentioned(comment: string): boolean {
-    return authenticatedUser?.data?.name
-        ? comment.includes(authenticatedUser.data.name)
-        : false;
-}
+

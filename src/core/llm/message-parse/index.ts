@@ -19,6 +19,7 @@ export async function parseMessage(message: string) {
         experimental_telemetry: AISDKExporter.getSettings({
             runName: "Message Parse",
         }),
+        temperature: 1,
     });
     return object;
 }

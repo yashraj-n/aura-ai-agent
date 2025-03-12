@@ -22,6 +22,7 @@
     "@opentelemetry/auto-instrumentations-node": "^0.56.1",
     "@opentelemetry/sdk-node": "^0.57.2",
     "@types/diff": "^7.0.1",
+    "@types/tmp": "^0.2.6",
     "ai": "^4.1.54",
     "diff": "^7.0.0",
     "dotenv": "^16.4.7",
@@ -33,6 +34,7 @@
     "ollama-ai-provider": "^1.2.0",
     "pg": "^8.13.3",
     "probot": "^13.4.4",
+    "tmp": "^0.2.3",
     "winston": "^3.17.0"
   },
   "scripts": {
