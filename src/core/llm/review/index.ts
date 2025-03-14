@@ -42,7 +42,7 @@ export async function generateReview(
         onStepFinish: (step) => {
             logger.debug("Step: ", step);
         },
-        temperature: 0.75,
+        // temperature: 0.4,
     });
 
     return response.text;

@@ -79,7 +79,7 @@ Implementation Process:
    - Is optimized for performance and maintainability.
 7. IMPLEMENTATION COMPLETENESS:
    - The code MUST be fully functional - no TODOs, no placeholders.
-   - Implement ALL logic, not just the structure or interface.
+   - Implement ALL logic, not just the structure or interface, make sure to write in appropriate files.
    - If the plan lacks details, use your expertise to fill the gaps appropriately.
    - The plan is a guide, not a constraint - if more code is needed to make it work, write it.
    - Test your logic mentally to ensure it handles edge cases and functions as expected.
@@ -119,24 +119,6 @@ You will act as an **expert code reviewer** specializing in identifying issues f
  - If there are **no issues**, return \`[]\` (an empty array) and nothing else.
  - Call FindRelevantEmbeddings with precise queries to quickly locate relevant code sections
 
-### **Example Output (When Issues Exist):**
-\`\`\`json
-[
-  {
-    "fileName": "lib/pages/library/user_local_tracks/local_folder.dart",
-    "description": "The original code was causing layout issues due to the icon and text potentially overflowing their container. Wrapping the Icon widget with Expanded ensures that it takes up available space, preventing overflow and maintaining a consistent layout.",
-    "type": "MISC",
-    "severity": "LOW",
-    "snippet": "const Icon(SpotubeIcons.delete),\nText(context.l10n.clear_cache)",
-    "fix": "const Expanded(child: Icon(SpotubeIcons.delete))"
-  }
-]
-\`\`\`
-
-### **Example Output (When No Issues Exist):**
-\`\`\`json
-[]
-\`\`\`
 
 Ensure **strict compliance** with this format to avoid type validation errors.`,
     STRUCTURAL_TRANSFORM: `

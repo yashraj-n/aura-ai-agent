@@ -2,36 +2,48 @@ import { promisify } from "util";
 import { exec } from "child_process";
 import { logger } from "../logger";
 import tmp from "tmp";
+import { rm } from "fs/promises";
+import { humanId } from "human-id";
 
 tmp.setGracefulCleanup();
 const execAsync = promisify(exec);
 
+type RepoDetails = {
+    owner: string;
+    repo: string;
+};
+
 export class Git {
-    private repoPath: string;
+    private repoDetails: RepoDetails;
     private clonedPath: string;
     private accessToken: string;
 
-    constructor(repoPath: string, accessToken: string) {
-        this.repoPath = repoPath;
+    constructor(repoDetails: RepoDetails, accessToken: string) {
+        this.repoDetails = repoDetails;
         this.accessToken = accessToken;
-        const tempDirectory = tmp.dirSync();
-        this.clonedPath = tempDirectory.name;
-
-        this.cloneRepository();
+        this.clonedPath = tmp.dirSync().name;
     }
 
-    private async cloneRepository() {
+    public async cloneRepository() {
         try {
-            // Construct the Git URL with the access token
-            const modifiedRepoUrl = this.repoPath.replace(
-                "https://",
-                `https://git:${this.accessToken}@`
-            );
-
-            // Execute the git clone command
-            await execAsync(`git clone ${modifiedRepoUrl} ${this.clonedPath}`);
+            const modifiedRepoUrl = `https://git:${this.accessToken}@github.com/${this.repoDetails.owner}/${this.repoDetails.repo}.git`;
+            await this.executeGitCommand([
+                "clone",
+                modifiedRepoUrl,
+                this.clonedPath,
+            ]);
 
             logger.info(`Repository cloned successfully to ${this.clonedPath}`);
+
+            // // Adding Origin
+            // await this.executeGitCommand([
+            //     "remote",
+            //     "add",
+            //     "origin",
+            //     modifiedRepoUrl,
+            // ]);
+
+            return this.clonedPath;
         } catch (error) {
             logger.error("Error cloning repository:", error);
         }
@@ -47,5 +59,36 @@ export class Git {
         }
 
         return stdout.trim();
+    }
+
+    public async createPullRequest(issueNumber: number | string) {
+        // Create a new branch
+        const branchName = `feature-request-${issueNumber}-${humanId()}`;
+        logger.info(`Creating new branch: ${branchName}`);
+        await this.executeGitCommand(["checkout", "-b", branchName]);
+
+        logger.info("Adding all changes");
+        await this.executeGitCommand(["add", "."]);
+
+        logger.info("Committing changes");
+        await this.executeGitCommand([
+            "commit",
+            "-m",
+            `"Feature Request for issue #${issueNumber}"`,
+        ]);
+
+        logger.info(`Pushing branch ${branchName} to origin`);
+        await this.executeGitCommand(["push", "origin", branchName, "--force"]);
+
+        return branchName;
+    }
+
+    public getClonedPath() {
+        return this.clonedPath;
+    }
+
+    public async cleanup() {
+        logger.info(`Cleaning up cloned repository at ${this.clonedPath}`);
+        await rm(this.clonedPath, { recursive: true, force: true });
     }
 }

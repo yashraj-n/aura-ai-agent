@@ -3,10 +3,10 @@ import { generateObject } from "ai";
 import { z } from "zod";
 import prompts from "../../../lib/prompts";
 import { AISDKExporter } from "langsmith/vercel";
-export async function transformStructural(
+export async function transformStructural<T>(
     response: string,
     schema: z.ZodSchema
-) {
+): Promise<T> {
     const { object } = await generateObject({
         model: mistralSmall,
         schema,
