@@ -97,6 +97,11 @@ export const handleIssueCommentCreated = async (
             });
 
             logger.info(`PR created: ${pr.data.html_url}`);
+
+            await createIssueComment(
+                context,
+                `## Task Finished\nThe task has been finished and a Pull Request had been created.\nYou can review the PR [here](${pr.data.html_url})`
+            );
         } catch (error) {
             logger.error("Error generating plan:", error);
             return createIssueComment(

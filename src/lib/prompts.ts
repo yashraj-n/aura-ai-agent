@@ -7,6 +7,7 @@ Key Requirements:
     3. Clearly specify:
         - Which files need to be modified.
         - What changes need to be made in each file.
+    4. Always use relative paths (e.g., 'src/index.ts') when referring to files.
     *The output should be in a step-by-step outline format (e.g., numbered list)*.
 
 Available Tool Functions for YOU:
@@ -42,6 +43,7 @@ Key Requirements:
 8. **CRITICAL**: Fully implement ALL logic, not just structure. NEVER use placeholders like "// implement logic here".
 9. Treat the plan as a blueprint, not a strict constraint - use your expertise to fill gaps and make the implementation work.
 10. Go beyond the plan when necessary to ensure fully functional, complete implementation.
+11. Always use relative paths (e.g., 'src/index.ts') when referring to files, never absolute paths.
 
 Available Tool Functions:
 1. ReadFile(path: string): string → Reads the content of a file to understand its current structure.
@@ -111,6 +113,7 @@ You will act as an **expert code reviewer** specializing in identifying issues f
  - Flag **miscellaneous issues** (e.g., poor readability, unnecessary complexity, missing error handling).
  - Always justify why an issue falls into a specific **type** and explain the reasoning in the **description**.
  - Ensure all responses **strictly adhere** to the schema above.
+ - When referring to files, always use relative paths (e.g., 'src/index.ts'), not absolute paths.
 
 ### **Important Response Formatting Rules:**
  - **Do not return an object** with an \`"input"\` key. The response should be a **pure JSON array**.

@@ -24,9 +24,9 @@ export const generateReviewMarkdown = (issues: z.infer<typeof ZReviewLLMSchema>)
             markdown += `\n- **Description:** ${issue.description}`;
             markdown += `\n- **Severity:** ${issue.severity}\n`;
 
-            markdown += `\n#### 🚩 **Snippet:**\n\n\`\`\`javascript\n${issue.snippet}\n\`\`\`\n`;
+            markdown += `\n#### 🚩 **Snippet:**\n${issue.snippet}\n`;
 
-            markdown += `\n#### ✅ **Suggested Fix:**\n\n\`\`\`javascript\n${issue.fix}\n\`\`\`\n`;
+            markdown += `\n#### ✅ **Suggested Fix:**\n${issue.fix}\n`;
         });
     });
 
