@@ -1,10 +1,12 @@
-import { codestral } from "../../../lib/models";
+import { claudeHaiku, codestral } from "../../../lib/models";
 import { ToolCallManager } from "../../tools/fs";
 import { generateText } from "ai";
 import prompts from "../../../lib/prompts";
 import { logger } from "../../../logger";
 import { AISDKExporter } from "langsmith/vercel";
 import type { IndexEmbedResponse } from "../../../utils";
+
+const model = claudeHaiku;
 
 export async function generatePlan(
     repoPath: string,
@@ -24,7 +26,7 @@ export async function generatePlan(
     logger.info("Calling LLM to generate plan...");
     try {
         const response = await generateText({
-            model: codestral,
+            model,
             system: prompts.PLAN_GENERATION,
             messages: [{ role: "user", content: userMessage }],
             tools: {
@@ -45,7 +47,11 @@ export async function generatePlan(
         logger.info("Plan generation completed successfully");
         return response.text;
     } catch (error) {
-        logger.error(`Error generating plan: ${error instanceof Error ? error.message : String(error)}`);
+        logger.error(
+            `Error generating plan: ${
+                error instanceof Error ? error.message : String(error)
+            }`
+        );
         throw error;
     }
 }

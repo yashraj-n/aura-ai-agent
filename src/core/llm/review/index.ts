@@ -1,6 +1,6 @@
-import { codestral, gemini } from "../../../lib/models";
+import { codestral } from "../../../lib/models";
 import { ToolCallManager } from "../../tools/fs";
-import { generateObject, generateText, Output } from "ai";
+import { generateText } from "ai";
 import prompts from "../../../lib/prompts";
 import { AISDKExporter } from "langsmith/vercel";
 import { type IndexEmbedResponse } from "../../../utils";

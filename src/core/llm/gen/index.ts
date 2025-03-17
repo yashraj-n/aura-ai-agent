@@ -1,11 +1,12 @@
-import { codestral, gemini } from "../../../lib/models";
+import { claudeHaiku, codestral } from "../../../lib/models";
 import { ToolCallManager } from "../../tools/fs";
 import { generateText } from "ai";
-import { ZReviewLLMSchema } from "../../../types/zod";
 import prompts from "../../../lib/prompts";
 import { logger } from "../../../logger";
 import { AISDKExporter } from "langsmith/vercel";
 import type { IndexEmbedResponse } from "../../../utils";
+
+const model = claudeHaiku;
 
 export async function generateChanges(
     repoPath: string,
@@ -28,7 +29,7 @@ export async function generateChanges(
     logger.info("Calling LLM to generate code changes...");
     try {
         const response = await generateText({
-            model: codestral,
+            model,
             system: prompts.CODE_GENERATION,
             messages: [{ role: "user", content: plan }],
             tools: {
@@ -53,7 +54,11 @@ export async function generateChanges(
         logger.info("Code changes generation completed successfully");
         return response.text;
     } catch (error) {
-        logger.error(`Error generating code changes: ${error instanceof Error ? error.message : String(error)}`);
+        logger.error(
+            `Error generating code changes: ${
+                error instanceof Error ? error.message : String(error)
+            }`
+        );
         throw error;
     }
 }

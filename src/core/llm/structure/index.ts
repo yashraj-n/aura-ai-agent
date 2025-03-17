@@ -1,4 +1,4 @@
-import { gemini, mistralSmall } from "../../../lib/models";
+import { mistralSmall } from "../../../lib/models";
 import { generateObject } from "ai";
 import { z } from "zod";
 import prompts from "../../../lib/prompts";
