@@ -1,19 +1,10 @@
 import type { Context } from "probot";
-import { authenticatedUser } from "../app";
 import { parseMessage } from "../core/llm/message-parse";
+import config from "../../config";
 
 export function isSelfMentioned(comment: string): boolean {
-    if (!authenticatedUser?.data?.name) {
-        return false;
-    }
-
-    const escapedName = authenticatedUser.data.name.replace(
-        /[.*+?^${}()|[\]\\]/g,
-        "\\$&"
-    );
-
     const mentionPattern = new RegExp(
-        `@${escapedName}\\b|\\b${escapedName}\\b`,
+        `@${config.APP_NAME}\\b|\\b${config.APP_NAME}\\b`,
         "i"
     );
 
