@@ -17,7 +17,14 @@ Aura is an intelligent code review assistant that leverages AI to streamline you
 ![Drizzle](https://img.shields.io/badge/Drizzle-C5F74F?logo=drizzle&logoColor=000)
 ![GitHub](https://img.shields.io/badge/GitHub-%23121011.svg?logo=github&logoColor=white)
 
+## Features
 
+- **Automated Code Reviews**: Automatically analyzes pull requests when they are opened, providing detailed feedback on code quality, potential bugs, and suggestions for improvements.
+- **Comment-Based Interactions**: Responds to mentions in issue comments, allowing users to request specific actions.
+- **Structural Code Analysis**: Transforms unstructured code reviews into structured feedback for better readability and actionability.
+- **Repository Indexing**: Indexes and embeds repository content for context-aware code analysis.
+- **Markdown-Formatted Feedback**: Generates well-formatted markdown reports for clear and organized feedback.
+- **Error Handling**: Built-in error handling and logging for reliable operation.
 
 ## Prerequisites
 ### LLM Keys
