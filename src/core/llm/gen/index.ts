@@ -36,7 +36,7 @@ export async function generateChanges(
                 ReadDirectory,
                 ReadFile,
                 GetAllFiles,
-                // FindRelevantEmbeddings,
+                FindRelevantEmbeddings,
                 WriteFile,
                 CreateFile,
                 CreateDirectory,
