@@ -1,4 +1,4 @@
-import { codestral } from "../../../lib/models";
+import { claudeHaiku, codestral } from "../../../lib/models";
 import { ToolCallManager } from "../../tools/fs";
 import { generateText } from "ai";
 import prompts from "../../../lib/prompts";
@@ -19,7 +19,7 @@ export async function generateReview(
         repoPath
     );
     const response = await generateText({
-        model: codestral,
+        model: claudeHaiku,
         system: prompts.CODE_REVIEW,
         messages: [
             {

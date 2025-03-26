@@ -4,7 +4,7 @@ import { createAnthropic } from "@ai-sdk/anthropic";
 
 export const claudeHaiku = createAnthropic({
     apiKey: process.env.ANTHROPIC_API_KEY,
-})("claude-3-5-haiku-latest");
+})("claude-3-5-sonnet-latest");
 
 export const mistralSmall = createMistral({
     apiKey: process.env.MISTRAL_API_KEY,
