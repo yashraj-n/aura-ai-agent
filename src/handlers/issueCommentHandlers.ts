@@ -14,6 +14,7 @@ import { z } from "zod";
 import { generateReviewMarkdown } from "../utils/markdown";
 import { generatePlan } from "../core/llm/plan";
 import { generateChanges } from "../core/llm/gen";
+import TasksManager from "../utils/task-manager";
 
 export const handleIssueCommentCreated = async (
     context: Context<"issue_comment.created">
@@ -37,11 +38,28 @@ export const handleIssueCommentCreated = async (
                 context,
                 "Review is only available when there are file changes (Pull Request)"
             );
+        const threads = await transformIssueToThread(context);
+
+        let generatedTask = new TasksManager({
+            issueId: context.payload.issue.number.toString(),
+            issueTitle: context.payload.issue.title,
+            issueUrl: context.payload.issue.html_url,
+            threads,
+            status: "started",
+            id: `${new Date().getTime()}-${context.payload.issue.number}-${
+                context.payload.repository.owner.login
+            }-${context.payload.repository.name}`,
+        });
+
+        await generatedTask.createTask();
+
         const {
             data: { token },
         } = await context.octokit.apps.createInstallationAccessToken({
             installation_id: context.payload.installation!.id,
         });
+
+        await generatedTask.setTaskStatus("cloning");
 
         const gitClient = new Git(
             {
@@ -59,22 +77,23 @@ export const handleIssueCommentCreated = async (
         }
 
         try {
-            const threads = await transformIssueToThread(context);
+            await generatedTask.setTaskStatus("indexing");
             const embeddingsData = await indexAndEmbedRepo(clonedPath);
+            await generatedTask.setTaskStatus("planning");
             const plan = await generatePlan(
                 clonedPath,
                 threads,
                 embeddingsData
             );
             console.log("Plan: ", plan);
-
+            await generatedTask.setTaskStatus("generating", plan);
             const codeGen = await generateChanges(
                 clonedPath,
                 plan,
                 embeddingsData
             );
             console.log("Code gen output: ", codeGen);
-
+            await generatedTask.setTaskStatus("pushing");
             const branchName = await gitClient.createPullRequest(
                 context.payload.issue.number
             );
@@ -97,11 +116,17 @@ export const handleIssueCommentCreated = async (
             });
 
             logger.info(`PR created: ${pr.data.html_url}`);
-
+            await generatedTask.setTaskStatus(
+                "done",
+                undefined,
+                pr.data.html_url
+            );
             await createIssueComment(
                 context,
                 `## Task Finished\nThe task has been finished and a Pull Request had been created.\nYou can review the PR [here](${pr.data.html_url})`
             );
+
+            await generatedTask.setTaskEndedAt();
         } catch (error) {
             logger.error("Error generating plan:", error);
             return createIssueComment(
