@@ -9,14 +9,16 @@ import { z } from "zod";
 import { ZReviewLLMSchema } from "../types/zod";
 import { generateReviewMarkdown } from "../utils/markdown";
 import ReviewManager from "../utils/review-manager";
+import { dashboardConfig } from "../config/dashboard";
 
 export const handlePullRequestOpened = async (
     context: Context<"pull_request.opened">
 ): Promise<any> => {
+    let id = `${new Date().getTime()}-${context.payload.number}-${
+        context.payload.repository.owner.login
+    }-${context.payload.repository.name}`;
     let reviewManager = new ReviewManager({
-        id: `${new Date().getTime()}-${context.payload.number}-${
-            context.payload.repository.owner.login
-        }-${context.payload.repository.name}`,
+        id: id,
         prLink: context.payload.pull_request.html_url,
         status: "started",
     });
@@ -24,6 +26,10 @@ export const handlePullRequestOpened = async (
     const [_review, patch] = await Promise.all([
         reviewManager.createReview(),
         getPullRequestPatch(context),
+        createPullRequestComment(
+            context,
+            `Doing a security review for this PR, You can see the progress on the dashboard [here](${dashboardConfig.url}/Review/${id})`
+        ),
     ]);
     const [_c, accessToken] = await Promise.all([
         reviewManager.setReviewStatus("cloning"),

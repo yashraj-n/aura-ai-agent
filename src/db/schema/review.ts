@@ -1,4 +1,4 @@
-import { pgTable, text, serial, pgEnum, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, pgEnum, timestamp } from "drizzle-orm/pg-core";
 
 const validTasks = [
     "started",

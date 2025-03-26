@@ -15,6 +15,7 @@ import { generateReviewMarkdown } from "../utils/markdown";
 import { generatePlan } from "../core/llm/plan";
 import { generateChanges } from "../core/llm/gen";
 import TasksManager from "../utils/task-manager";
+import { dashboardConfig } from "../config/dashboard";
 
 export const handleIssueCommentCreated = async (
     context: Context<"issue_comment.created">
@@ -40,18 +41,25 @@ export const handleIssueCommentCreated = async (
             );
         const threads = await transformIssueToThread(context);
 
+        let id = `${new Date().getTime()}-${context.payload.issue.number}-${
+            context.payload.repository.owner.login
+        }-${context.payload.repository.name}`;
         let generatedTask = new TasksManager({
             issueId: context.payload.issue.number.toString(),
             issueTitle: context.payload.issue.title,
             issueUrl: context.payload.issue.html_url,
             threads,
             status: "started",
-            id: `${new Date().getTime()}-${context.payload.issue.number}-${
-                context.payload.repository.owner.login
-            }-${context.payload.repository.name}`,
+            id: id,
         });
 
-        await generatedTask.createTask();
+        await Promise.all([
+            generatedTask.createTask(),
+            createIssueComment(
+                context,
+                `Creating a task for this issue, You can see the progress on the dashboard [here](${dashboardConfig.url}/Task/${id})`
+            ),
+        ]);
 
         const {
             data: { token },
