@@ -1,3 +1,5 @@
+
+
 <div align="center">
 
 <img src="apps/client/public/images/tenet_logo_draft.jpg" alt="Tenet logo" width="140" />
@@ -79,8 +81,8 @@ oxlint / oxfmt.
 
 ```sh
 # 1. Clone and install (installs all workspaces)
-git clone https://github.com/yashraj-n/aura-ai-agent.git
-cd aura-ai-agent
+git clone https://github.com/yashraj-n/tenet.git
+cd tenet
 bun install
 
 # 2. Configure the agent
